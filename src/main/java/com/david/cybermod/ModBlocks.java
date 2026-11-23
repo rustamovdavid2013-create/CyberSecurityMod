@@ -24,6 +24,12 @@ public class ModBlocks {
                     .sound(SoundType.METAL)
                     .noOcclusion()));
 
+    public static final RegistryObject<Block> DEFENSE_SERVER = registerBlock("defense_server",
+            () -> new DefenseServerBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL)
+                    .strength(5.0f)
+                    .sound(SoundType.METAL)));
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);
