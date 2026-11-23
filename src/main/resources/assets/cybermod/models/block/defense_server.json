@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "cybermod:block/defense_server_top",
+    "front": "cybermod:block/defense_server_front",
+    "side": "cybermod:block/defense_server_side"
+  }
+}
