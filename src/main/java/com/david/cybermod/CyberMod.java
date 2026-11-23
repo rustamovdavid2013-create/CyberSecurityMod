@@ -1,26 +1,26 @@
 package com.david.cybermod;
 
+import com.mojang.logging.LogUtils;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import org.apache.logging.log4j.Logger;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.slf4j.Logger;
 
-@Mod(modid = CyberMod.MODID, name = CyberMod.NAME, version = CyberMod.VERSION)
+@Mod(CyberMod.MODID)
 public class CyberMod {
     public static final String MODID = "cybermod";
-    public static final String NAME = "Cyber Security Mod";
-    public static final String VERSION = "1.0.0";
+    private static final Logger LOGGER = LogUtils.getLogger();
 
-    public static Logger logger;
+    public CyberMod() {
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.addListener(this::commonSetup);
 
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-        logger = event.getModLog();
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
-    @EventHandler
-    public void init(FMLInitializationEvent event) {
-        logger.info("Cyber Security Mod успешно загружен!");
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        LOGGER.info("Cyber Security Mod успешно загружен!");
     }
 }
