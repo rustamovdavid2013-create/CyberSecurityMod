@@ -1,40 +1,24 @@
 {
-  "itemGroup.cybermod": "CyberSecurity Mod",
-
+  "creativetab.cybermod.cyber_tab": "CyberSecurity Mod",
   "block.cybermod.hacker_laptop": "Хакерский ноутбук",
   "block.cybermod.defense_server": "Сервер защиты",
   "block.cybermod.jammer_block": "Заглушка сети",
-  "block.cybermod.black_market_terminal": "Терминал черного рынка",
-
-  "item.cybermod.disk_sniffer": "Диск атаки: Сниффер",
-  "item.cybermod.disk_trojan": "Диск атаки: Троян",
-  "item.cybermod.disk_ddos": "Диск атаки: DDoS",
-  "item.cybermod.disk_fork_bomb": "Диск атаки: Форк-бомба",
-  "item.cybermod.disk_blackout": "Диск атаки: Блэкаут-Протокол",
-
+  "item.cybermod.sniffer_disk": "Диск: Сниффер",
+  "item.cybermod.trojan_disk": "Диск: Троян",
+  "item.cybermod.ddos_disk": "Диск: DDoS-атака",
+  "item.cybermod.forkbomb_disk": "Диск: Форк-бомба",
+  "item.cybermod.blackout_disk": "Диск: Блэкаут-Протокол",
   "item.cybermod.calibrated_eye": "Откалиброванный глаз",
-  "item.cybermod.paper_letters": "Бумажные письма",
-  "item.cybermod.dye_confetti": "Разноцветное конфетти",
-
+  "item.cybermod.paper_letter": "Бумажное письмо",
+  "item.cybermod.confetti": "Конфетти",
   "item.cybermod.antivirus_module": "Модуль антивируса",
   "item.cybermod.firewall_module": "Модуль файрвола",
   "item.cybermod.honeypot_module": "Модуль Honeypot (Приманка)",
-  "item.cybermod.killer_drone": "Дрон-убийца",
-
-  "item.cybermod.dirty_money": "Грязная купюра",
-  "item.cybermod.torn_dirty_money": "Порванная грязная купюра",
-  "item.cybermod.faded_dirty_money": "Выцветшая грязная купюра",
-  "item.cybermod.clean_money": "Чистая купюра",
   "item.cybermod.bill_detector": "Детектор купюр",
-
-  "gui.cybermod.laptop.title": "Терминал взлома",
-  "gui.cybermod.laptop.target_coords": "Координаты цели (X, Y, Z)",
-  "gui.cybermod.laptop.launch_attack": "Запустить взлом",
-  "gui.cybermod.laptop.energy": "Энергия: %s / %s RF",
-
-  "message.cybermod.cooldown_fail": "Взлом провален! Блокировка цели на 20 минут.",
-  "message.cybermod.cooldown_antivirus": "Обнаружен антивирус! Доступ заблокирован на 10 минут.",
-  "message.cybermod.honeypot_triggered": "Внимание! Взломана приманка Honeypot. Ваши координаты переданы цели!",
-  "message.cybermod.bill_clean": "Проверка пройдена: купюра чистая.",
-  "message.cybermod.bill_dirty": "Внимание: обнаружены следы грязных денег!",
-  "block.cybermod.defense_server": "Сервер защиты"
+  "item.cybermod.dirty_bill_10": "Грязная купюра 10$ (Смытая)",
+  "item.cybermod.dirty_bill_50": "Грязная купюра 50$ (Смытая)",
+  "item.cybermod.dirty_bill_100": "Грязная купюра 100$ (Смытая)",
+  "item.cybermod.clean_bill_10": "Чистая купюра 10$ (Зеленая)",
+  "item.cybermod.clean_bill_50": "Чистая купюра 50$ (Синяя)",
+  "item.cybermod.clean_bill_100": "Чистая купюра 100$ (Фиолетовая)"
+}
