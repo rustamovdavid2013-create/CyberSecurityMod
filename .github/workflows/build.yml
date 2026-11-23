@@ -13,18 +13,23 @@ jobs:
       - name: Скачивание твоего кода
         uses: actions/checkout@v4
 
+      - name: Скачивание шаблона Forge
+        uses: actions/checkout@v4
+        with:
+          repository: MinecraftForge/MinecraftForge
+          ref: 1.20.x
+          path: temp_forge
+
+      - name: Копирование файлов MDK
+        run: |
+          cp -rn temp_forge/mdk/* .
+          rm -rf temp_forge
+
       - name: Установка Java 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-
-      - name: Загрузка официального MDK из GitHub Forge
-        run: |
-          git clone --depth 1 --branch 1.20.x https://github.com temp_forge
-          cp -rn temp_forge/mdk/* .
-          cp -rn temp_forge/mdk/.gitignore . || true
-          rm -rf temp_forge
 
       - name: Выдача прав на запуск Gradle
         run: chmod +x gradlew
@@ -37,5 +42,3 @@ jobs:
         with:
           name: CyberSecurityMod-1.20.1
           path: build/libs/*.jar
-
-
