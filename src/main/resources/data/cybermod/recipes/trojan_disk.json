@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " D ",
+    " P ",
+    " S "
+  ],
+  "key": {
+    "D": { "tag": "minecraft:wooden_doors" },
+    "P": { "item": "minecraft:diamond" },
+    "S": { "item": "minecraft:sticky_piston" }
+  },
+  "result": {
+    "item": "cybermod:trojan_disk",
+    "count": 1
+  }
+}
