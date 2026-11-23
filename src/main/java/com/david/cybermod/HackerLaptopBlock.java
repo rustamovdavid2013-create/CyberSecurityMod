@@ -46,15 +46,10 @@ public class HackerLaptopBlock extends BaseEntityBlock {
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.MODEL;
-    }
+    public RenderShape getRenderShape(BlockState state) { return RenderShape.MODEL; }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return SHAPE;
-    }
-
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) { return SHAPE; }
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
@@ -93,7 +88,7 @@ public class HackerLaptopBlock extends BaseEntityBlock {
             ItemStack heldItem = player.getItemInHand(hand);
             ItemStack currentDisk = laptop.getDisk();
 
-            if (currentDisk.isEmpty() && isHackDisk(heldItem)) {
+            if (currentDisk.isEmpty() && heldItem.getItem() instanceof HackDiskItem) {
                 laptop.setDisk(heldItem.split(1));
                 level.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK.get(), SoundSource.BLOCKS, 1.0f, 1.2f);
                 player.sendSystemMessage(Component.literal("[CyberOS] Диск загружен: " + laptop.getDisk().getHoverName().getString()).withStyle(ChatFormatting.GREEN));
@@ -101,21 +96,14 @@ public class HackerLaptopBlock extends BaseEntityBlock {
                 player.getInventory().placeItemBackInInventory(currentDisk.copy());
                 laptop.setDisk(ItemStack.EMPTY);
                 level.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK.get(), SoundSource.BLOCKS, 1.0f, 0.8f);
-                player.sendSystemMessage(Component.literal("[CyberOS] Диск извлечен.").withStyle(ChatFormatting.YELLOW));
+                player.sendSystemMessage(Component.literal("[CyberOS] Диск извлечен (таймер кулдауна сохранен).").withStyle(ChatFormatting.YELLOW));
+            } else if (!currentDisk.isEmpty()) {
+                laptop.executeHack(player);
             } else {
-                String diskName = currentDisk.isEmpty() ? "Нет" : currentDisk.getHoverName().getString();
-                player.sendSystemMessage(Component.literal("[CyberOS] Заряд: " + laptop.getEnergy() + " / " + laptop.getMaxEnergy() + " RF | Диск: " + diskName).withStyle(ChatFormatting.AQUA));
+                player.sendSystemMessage(Component.literal("[CyberOS] Заряд: " + laptop.getEnergy() + " / " + laptop.getMaxEnergy() + " RF | Вставьте диск атаки.").withStyle(ChatFormatting.AQUA));
             }
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
-    }
-
-    private boolean isHackDisk(ItemStack stack) {
-        return stack.is(ModItems.SNIFFER_DISK.get())
-                || stack.is(ModItems.TROJAN_DISK.get())
-                || stack.is(ModItems.DDOS_DISK.get())
-                || stack.is(ModItems.FORKBOMB_DISK.get())
-                || stack.is(ModItems.BLACKOUT_DISK.get());
     }
 
     @Override
