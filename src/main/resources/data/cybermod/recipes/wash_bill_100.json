@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "cybermod:dirty_bill_100" },
+    { "item": "minecraft:magenta_dye" }
+  ],
+  "result": { "item": "cybermod:clean_bill_100", "count": 1 }
+}
