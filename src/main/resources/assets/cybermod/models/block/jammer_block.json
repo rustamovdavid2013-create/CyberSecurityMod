@@ -1,0 +1,36 @@
+{
+  "credit": "CyberSecurity Mod",
+  "textures": {
+    "base": "cybermod:block/jammer_base",
+    "antenna": "cybermod:block/jammer_antenna",
+    "particle": "cybermod:block/jammer_base"
+  },
+  "elements": [
+    {
+      "name": "base",
+      "from":,
+      "to":,
+      "faces": {
+        "north": {"uv":, "texture": "#base"},
+        "east": {"uv":, "texture": "#base"},
+        "south": {"uv":, "texture": "#base"},
+        "west": {"uv":, "texture": "#base"},
+        "up": {"uv":, "texture": "#base"},
+        "down": {"uv":, "texture": "#base"}
+      }
+    },
+    {
+      "name": "antenna",
+      "from":,
+      "to":,
+      "faces": {
+        "north": {"uv":, "texture": "#antenna"},
+        "east": {"uv":, "texture": "#antenna"},
+        "south": {"uv":, "texture": "#antenna"},
+        "west": {"uv":, "texture": "#antenna"},
+        "up": {"uv":, "texture": "#antenna"},
+        "down": {"uv":, "texture": "#antenna"}
+      }
+    }
+  ]
+}
