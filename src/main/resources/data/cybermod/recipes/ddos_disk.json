@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LLL",
+    "LRL",
+    "LLL"
+  ],
+  "key": {
+    "L": { "item": "cybermod:paper_letter" },
+    "R": { "item": "minecraft:redstone_block" }
+  },
+  "result": {
+    "item": "cybermod:ddos_disk",
+    "count": 1
+  }
+}
