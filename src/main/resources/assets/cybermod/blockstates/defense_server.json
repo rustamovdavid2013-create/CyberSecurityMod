@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "cybermod:block/defense_server" },
+    "facing=east":  { "model": "cybermod:block/defense_server", "y": 90 },
+    "facing=south": { "model": "cybermod:block/defense_server", "y": 180 },
+    "facing=west":  { "model": "cybermod:block/defense_server", "y": 270 }
+  }
+}
