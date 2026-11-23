@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "CTC",
+    "CCC"
+  ],
+  "key": {
+    "C": { "item": "cybermod:confetti" },
+    "T": { "item": "minecraft:tnt" }
+  },
+  "result": {
+    "item": "cybermod:forkbomb_disk",
+    "count": 1
+  }
+}
