@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IRI",
+    "RHR",
+    "IRI"
+  ],
+  "key": {
+    "I": { "item": "minecraft:iron_ingot" },
+    "R": { "item": "minecraft:redstone" },
+    "H": { "item": "minecraft:honey_bottle" }
+  },
+  "result": { "item": "cybermod:honeypot_module", "count": 1 }
+}
