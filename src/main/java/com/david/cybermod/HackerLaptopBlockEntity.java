@@ -193,4 +193,85 @@ public class HackerLaptopBlockEntity extends BlockEntity {
             if (activeServer != null) {
                 for (int i = 0; i < 2; i++) {
                     ItemStack mod = activeServer.getSlot(i);
-                    if (mod.is(ModItems.ANTIVIRUS_MODULE.get())) {
+                                        if (mod.is(ModItems.ANTIVIRUS_MODULE.get())) {
+                        activeServer.extractModule();
+                    }
+                }
+                hacker.sendSystemMessage(Component.literal("[DDoS] Сервер защиты цели перегружен! Антивирус отключен!").withStyle(ChatFormatting.GREEN));
+            } else {
+                hacker.sendSystemMessage(Component.literal("[DDoS] Удар нанесен, но активных Серверов защиты рядом с целью не найдено.").withStyle(ChatFormatting.YELLOW));
+            }
+
+        } else if (disk.is(ModItems.FORKBOMB_DISK.get())) {
+            List<ServerPlayer> victims = level.getEntitiesOfClass(ServerPlayer.class, new AABB(target).inflate(8));
+            for (ServerPlayer victim : victims) {
+                for (int i = 0; i < 9; i++) {
+                    ItemStack spam = new ItemStack(ModItems.CONFETTI.get(), 64);
+                    spam.setHoverName(Component.literal("FORK_BOMB_PROCESS_0x99").withStyle(ChatFormatting.OBFUSCATED));
+                    victim.getInventory().add(spam);
+                }
+                victim.sendSystemMessage(Component.literal("[ВНИМАНИЕ] Ваша система атакована Форк-бомбой!").withStyle(ChatFormatting.RED));
+            }
+            hacker.sendSystemMessage(Component.literal("[Форк-бомба] Инвентарь целей в зоне поражения забит спам-процессами!").withStyle(ChatFormatting.GREEN));
+
+        } else if (disk.is(ModItems.BLACKOUT_DISK.get())) {
+            for (BlockPos scanPos : BlockPos.betweenClosed(target.offset(-15, -10, -15), target.offset(15, 10, 15))) {
+                if (level.getBlockEntity(scanPos) instanceof HackerLaptopBlockEntity victimLaptop && !scanPos.equals(worldPosition)) {
+                    victimLaptop.setBlackout(20 * 150);
+                }
+            }
+            hacker.sendSystemMessage(Component.literal("[БЛЭКАУТ-ПРОТОКОЛ] Все ПК и системы в радиусе 15 блоков вырублены на 2.5 минуты! Кулдаун: 1 игровой день.").withStyle(ChatFormatting.DARK_PURPLE));
+            cooldownTicks = 24000;
+        }
+    }
+
+    public void setBlackout(int ticks) {
+        this.blackoutTicks = ticks;
+        setChanged();
+    }
+
+    public ItemStack getDisk() { return itemHandler.getStackInSlot(0); }
+    public void setDisk(ItemStack stack) { itemHandler.setStackInSlot(0, stack); }
+    public int getEnergy() { return energyStorage.getEnergyStored(); }
+    public int getMaxEnergy() { return energyStorage.getMaxEnergyStored(); }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ITEM_HANDLER) return lazyItemHandler.cast();
+        if (cap == ForgeCapabilities.ENERGY) return lazyEnergyHandler.cast();
+        return super.getCapability(cap, side);
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        lazyItemHandler = LazyOptional.of(() -> itemHandler);
+        lazyEnergyHandler = LazyOptional.of(() -> energyStorage);
+    }
+
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        lazyItemHandler.invalidate();
+        lazyEnergyHandler.invalidate();
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag) {
+        tag.put("inventory", itemHandler.serializeNBT());
+        tag.putInt("energy", energyStorage.getEnergyStored());
+        tag.putInt("cooldown", cooldownTicks);
+        tag.putInt("blackout", blackoutTicks);
+        super.saveAdditional(tag);
+    }
+
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        itemHandler.deserializeNBT(tag.getCompound("inventory"));
+        if (tag.contains("energy")) energyStorage.receiveEnergy(tag.getInt("energy"), false);
+        cooldownTicks = tag.getInt("cooldown");
+        blackoutTicks = tag.getInt("blackout");
+    }
+}
+
