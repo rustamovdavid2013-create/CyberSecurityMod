@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    "IRI",
+    " I "
+  ],
+  "key": {
+    "G": { "item": "minecraft:amethyst_shard" },
+    "I": { "item": "minecraft:iron_ingot" },
+    "R": { "item": "minecraft:redstone" }
+  },
+  "result": { "item": "cybermod:bill_detector", "count": 1 }
+}
