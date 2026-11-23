@@ -19,7 +19,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class HackerLaptopBlockEntity extends BlockEntity {
 
-    // 1 слот под диск атаки
     private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -27,7 +26,6 @@ public class HackerLaptopBlockEntity extends BlockEntity {
         }
     };
 
-    // Батарея ноутбука: макс. 10 000 RF, прием до 1000 RF/t
     private final EnergyStorage energyStorage = new EnergyStorage(10000, 1000, 200) {
         @Override
         public int receiveEnergy(int maxReceive, boolean simulate) {
@@ -44,7 +42,6 @@ public class HackerLaptopBlockEntity extends BlockEntity {
         super(ModBlockEntities.HACKER_LAPTOP_BE.get(), pos, state);
     }
 
-    // Тик ноутбука: если вставлен диск, потребляет 200 RF/t
     public static void tick(Level level, BlockPos pos, BlockState state, HackerLaptopBlockEntity entity) {
         if (level.isClientSide) return;
 
