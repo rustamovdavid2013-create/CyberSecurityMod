@@ -23,6 +23,8 @@ jobs:
       - name: Копирование файлов MDK
         run: |
           cp -rn temp_forge/mdk/* .
+          cp -rn temp_forge/gradlew .
+          cp -rn temp_forge/gradle .
           rm -rf temp_forge
 
       - name: Установка Java 17
