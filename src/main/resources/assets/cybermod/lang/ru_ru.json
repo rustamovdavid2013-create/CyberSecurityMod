@@ -36,5 +36,5 @@
   "message.cybermod.cooldown_antivirus": "Обнаружен антивирус! Доступ заблокирован на 10 минут.",
   "message.cybermod.honeypot_triggered": "Внимание! Взломана приманка Honeypot. Ваши координаты переданы цели!",
   "message.cybermod.bill_clean": "Проверка пройдена: купюра чистая.",
-  "message.cybermod.bill_dirty": "Внимание: обнаружены следы грязных денег!"
+  "message.cybermod.bill_dirty": "Внимание: обнаружены следы грязных денег!",
   "block.cybermod.defense_server": "Сервер защиты"
