@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ENE",
+    "RDR",
+    "ENE"
+  ],
+  "key": {
+    "E": { "item": "cybermod:calibrated_eye" },
+    "N": { "item": "minecraft:nether_star" },
+    "R": { "item": "minecraft:redstone_block" },
+    "D": { "item": "minecraft:dragon_egg" }
+  },
+  "result": {
+    "item": "cybermod:blackout_disk",
+    "count": 1
+  }
+}
