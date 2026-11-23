@@ -65,12 +65,17 @@ public class DefenseServerBlock extends BaseEntityBlock {
         return new DefenseServerBlockEntity(pos, state);
     }
 
+    public static boolean isServerModule(ItemStack stack) {
+        return stack.is(ModItems.ANTIVIRUS_MODULE.get())
+                || stack.is(ModItems.FIREWALL_MODULE.get())
+                || stack.is(ModItems.HONEYPOT_MODULE.get());
+    }
+
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof DefenseServerBlockEntity server) {
             ItemStack heldItem = player.getItemInHand(hand);
 
-            // Shift + ПКМ — извлечь модуль из слота (сначала из 2-го, потом из 1-го)
             if (player.isShiftKeyDown()) {
                 ItemStack extracted = server.extractModule();
                 if (!extracted.isEmpty()) {
@@ -81,8 +86,12 @@ public class DefenseServerBlock extends BaseEntityBlock {
                 }
             }
 
-            // ПКМ с предметом в руке — вставить в свободный слот (пока принимаем любые модули/предметы защиты)
             if (!heldItem.isEmpty()) {
+                if (!isServerModule(heldItem)) {
+                    player.sendSystemMessage(Component.literal("[Сервер защиты] Ошибка: сюда можно вставлять только модули защиты (Антивирус, Файрвол, Honeypot)!").withStyle(ChatFormatting.RED));
+                    return InteractionResult.SUCCESS;
+                }
+
                 if (server.insertModule(heldItem)) {
                     level.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK.get(), SoundSource.BLOCKS, 1.0f, 1.2f);
                     player.sendSystemMessage(Component.literal("[Сервер защиты] Модуль установлен!").withStyle(ChatFormatting.GREEN));
@@ -93,7 +102,6 @@ public class DefenseServerBlock extends BaseEntityBlock {
                 }
             }
 
-            // Иначе показать статус 2 слотов
             String slot1 = server.getSlot(0).isEmpty() ? "Пусто" : server.getSlot(0).getHoverName().getString();
             String slot2 = server.getSlot(1).isEmpty() ? "Пусто" : server.getSlot(1).getHoverName().getString();
             player.sendSystemMessage(Component.literal("[Сервер защиты] Слот 1: " + slot1 + " | Слот 2: " + slot2).withStyle(ChatFormatting.AQUA));
