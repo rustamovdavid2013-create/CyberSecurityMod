@@ -15,9 +15,11 @@ public class CyberMod {
 
     public CyberMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        
+
         ModItems.register(modEventBus);
-        
+        ModBlocks.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
+
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
     }
