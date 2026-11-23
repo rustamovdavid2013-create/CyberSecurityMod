@@ -13,26 +13,19 @@ jobs:
       - name: Скачивание твоего кода
         uses: actions/checkout@v4
 
-      - name: Скачивание официального MDK 1.20.1
-        run: |
-          curl -fL -A "Mozilla/5.0" -o mdk.zip "https://minecraftforge.net"
-          unzip -o mdk.zip -d temp_mdk
-          cp -r temp_mdk/gradle temp_mdk/gradlew temp_mdk/gradlew.bat temp_mdk/build.gradle temp_mdk/gradle.properties temp_mdk/settings.gradle .
-          cp -rn temp_mdk/src .
-          rm -rf temp_mdk mdk.zip
-          sed -i 's/gradle-[0-9.]*-bin.zip/gradle-9.3.0-bin.zip/g' gradle/wrapper/gradle-wrapper.properties
-
       - name: Установка Java 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Выдача прав на запуск Gradle
-        run: chmod +x gradlew
+      - name: Установка Gradle 8.8
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.8'
 
       - name: Сборка мода (.jar)
-        run: ./gradlew build
+        run: gradle build
 
       - name: Загрузка готового файла
         uses: actions/upload-artifact@v4
