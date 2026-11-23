@@ -15,6 +15,11 @@ public class ModBlockEntities {
                     BlockEntityType.Builder.of(HackerLaptopBlockEntity::new,
                             ModBlocks.HACKER_LAPTOP.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<DefenseServerBlockEntity>> DEFENSE_SERVER_BE =
+            BLOCK_ENTITIES.register("defense_server_be", () ->
+                    BlockEntityType.Builder.of(DefenseServerBlockEntity::new,
+                            ModBlocks.DEFENSE_SERVER.get()).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }
