@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IRI",
+    "RER",
+    "IRI"
+  ],
+  "key": {
+    "I": { "item": "minecraft:iron_ingot" },
+    "R": { "item": "minecraft:redstone" },
+    "E": { "item": "cybermod:calibrated_eye" }
+  },
+  "result": {
+    "item": "cybermod:sniffer_disk",
+    "count": 1
+  }
+}
