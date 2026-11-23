@@ -17,12 +17,12 @@ public class ModItems {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, CyberMod.MODID);
 
-    // Диски атак
-    public static final RegistryObject<Item> SNIFFER_DISK = ITEMS.register("sniffer_disk", () -> new Item(new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> TROJAN_DISK = ITEMS.register("trojan_disk", () -> new Item(new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> DDOS_DISK = ITEMS.register("ddos_disk", () -> new Item(new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> FORKBOMB_DISK = ITEMS.register("forkbomb_disk", () -> new Item(new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> BLACKOUT_DISK = ITEMS.register("blackout_disk", () -> new Item(new Item.Properties().stacksTo(1)));
+    // Диски атак (с записью координат)
+    public static final RegistryObject<Item> SNIFFER_DISK = ITEMS.register("sniffer_disk", () -> new HackDiskItem(new Item.Properties(), "Сниффер (Шпионаж)"));
+    public static final RegistryObject<Item> TROJAN_DISK = ITEMS.register("trojan_disk", () -> new HackDiskItem(new Item.Properties(), "Троян (Кража)"));
+    public static final RegistryObject<Item> DDOS_DISK = ITEMS.register("ddos_disk", () -> new HackDiskItem(new Item.Properties(), "DDoS (Блокировка)"));
+    public static final RegistryObject<Item> FORKBOMB_DISK = ITEMS.register("forkbomb_disk", () -> new HackDiskItem(new Item.Properties(), "Форк-бомба (Мусор)"));
+    public static final RegistryObject<Item> BLACKOUT_DISK = ITEMS.register("blackout_disk", () -> new HackDiskItem(new Item.Properties(), "Блэкаут-Протокол"));
 
     // Материалы
     public static final RegistryObject<Item> CALIBRATED_EYE = ITEMS.register("calibrated_eye", () -> new Item(new Item.Properties()));
@@ -50,25 +50,20 @@ public class ModItems {
                     .icon(() -> new ItemStack(SNIFFER_DISK.get()))
                     .title(Component.translatable("creativetab.cybermod.cyber_tab"))
                     .displayItems((parameters, output) -> {
-                        // Блоки
                         output.accept(ModBlocks.HACKER_LAPTOP.get());
                         output.accept(ModBlocks.DEFENSE_SERVER.get());
                         output.accept(ModBlocks.JAMMER_BLOCK.get());
-                        // Диски
                         output.accept(SNIFFER_DISK.get());
                         output.accept(TROJAN_DISK.get());
                         output.accept(DDOS_DISK.get());
                         output.accept(FORKBOMB_DISK.get());
                         output.accept(BLACKOUT_DISK.get());
-                        // Модули защиты
                         output.accept(ANTIVIRUS_MODULE.get());
                         output.accept(FIREWALL_MODULE.get());
                         output.accept(HONEYPOT_MODULE.get());
-                        // Материалы
                         output.accept(CALIBRATED_EYE.get());
                         output.accept(PAPER_LETTER.get());
                         output.accept(CONFETTI.get());
-                        // Экономика
                         output.accept(BILL_DETECTOR.get());
                         output.accept(DIRTY_BILL_10.get());
                         output.accept(DIRTY_BILL_50.get());
