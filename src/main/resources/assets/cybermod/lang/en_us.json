@@ -1,0 +1,11 @@
+{
+  "creativetab.cybermod.cyber_tab": "CyberSecurity Mod",
+  "item.cybermod.sniffer_disk": "Disk: Sniffer",
+  "item.cybermod.trojan_disk": "Disk: Trojan",
+  "item.cybermod.ddos_disk": "Disk: DDoS Attack",
+  "item.cybermod.forkbomb_disk": "Disk: Fork-Bomb",
+  "item.cybermod.blackout_disk": "Disk: Blackout Protocol",
+  "item.cybermod.calibrated_eye": "Calibrated Eye",
+  "item.cybermod.paper_letter": "Paper Letter",
+  "item.cybermod.confetti": "Confetti"
+}
