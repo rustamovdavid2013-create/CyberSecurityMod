@@ -30,6 +30,13 @@ public class ModBlocks {
                     .strength(5.0f)
                     .sound(SoundType.METAL)));
 
+    public static final RegistryObject<Block> JAMMER_BLOCK = registerBlock("jammer_block",
+            () -> new JammerBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL)
+                    .strength(2.5f)
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);
