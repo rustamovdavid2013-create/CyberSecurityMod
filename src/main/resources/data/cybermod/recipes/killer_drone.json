@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "B B",
+    "RER",
+    "ITI"
+  ],
+  "key": {
+    "B": { "item": "cybermod:diamond_blade" },
+    "R": { "item": "minecraft:redstone_block" },
+    "E": { "item": "cybermod:calibrated_eye" },
+    "I": { "item": "minecraft:iron_ingot" },
+    "T": { "item": "minecraft:tnt" }
+  },
+  "result": {
+    "item": "cybermod:killer_drone",
+    "count": 1
+  }
+}
