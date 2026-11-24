@@ -1,24 +1,33 @@
 {
   "creativetab.cybermod.cyber_tab": "CyberSecurity Mod",
+
   "block.cybermod.hacker_laptop": "Хакерский ноутбук",
   "block.cybermod.defense_server": "Сервер защиты",
-  "block.cybermod.jammer_block": "Заглушка сети",
-  "item.cybermod.sniffer_disk": "Диск: Сниффер",
-  "item.cybermod.trojan_disk": "Диск: Троян",
-  "item.cybermod.ddos_disk": "Диск: DDoS-атака",
-  "item.cybermod.forkbomb_disk": "Диск: Форк-бомба",
+  "block.cybermod.jammer_block": "Глушилка сигнала",
+
+  "item.cybermod.sniffer_disk": "Диск: Сниффер (Шпионаж)",
+  "item.cybermod.trojan_disk": "Диск: Троян (Кража)",
+  "item.cybermod.ddos_disk": "Диск: DDoS (Блокировка)",
+  "item.cybermod.forkbomb_disk": "Диск: Форк-бомба (Мусор)",
   "item.cybermod.blackout_disk": "Диск: Блэкаут-Протокол",
+
+  "item.cybermod.antivirus_module": "Модуль: Антивирус",
+  "item.cybermod.firewall_module": "Модуль: Файрвол",
+  "item.cybermod.honeypot_module": "Модуль: Приманка (Honeypot)",
+
   "item.cybermod.calibrated_eye": "Откалиброванный глаз",
   "item.cybermod.paper_letter": "Бумажное письмо",
   "item.cybermod.confetti": "Конфетти",
-  "item.cybermod.antivirus_module": "Модуль антивируса",
-  "item.cybermod.firewall_module": "Модуль файрвола",
-  "item.cybermod.honeypot_module": "Модуль Honeypot (Приманка)",
+  "item.cybermod.diamond_blade": "Алмазная лопасть",
+  "item.cybermod.killer_drone": "Дрон-убийца",
+
   "item.cybermod.bill_detector": "Детектор купюр",
-  "item.cybermod.dirty_bill_10": "Грязная купюра 10$ (Смытая)",
-  "item.cybermod.dirty_bill_50": "Грязная купюра 50$ (Смытая)",
-  "item.cybermod.dirty_bill_100": "Грязная купюра 100$ (Смытая)",
-  "item.cybermod.clean_bill_10": "Чистая купюра 10$ (Зеленая)",
-  "item.cybermod.clean_bill_50": "Чистая купюра 50$ (Синяя)",
-  "item.cybermod.clean_bill_100": "Чистая купюра 100$ (Фиолетовая)"
+  "item.cybermod.dirty_bill_10": "Грязная купюра (10$)",
+  "item.cybermod.dirty_bill_50": "Грязная купюра (50$)",
+  "item.cybermod.dirty_bill_100": "Грязная купюра (100$)",
+  "item.cybermod.clean_bill_10": "Чистая купюра (10$)",
+  "item.cybermod.clean_bill_50": "Чистая купюра (50$)",
+  "item.cybermod.clean_bill_100": "Чистая купюра (100$)",
+
+  "entity.cybermod.killer_drone": "Дрон-убийца"
 }
