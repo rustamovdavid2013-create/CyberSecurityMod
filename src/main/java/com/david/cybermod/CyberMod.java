@@ -3,7 +3,7 @@ package com.david.cybermod;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.renderer.entity.WitherSkullRenderer;
+import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -42,7 +42,7 @@ public class CyberMod {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             MenuScreens.register(ModMenuTypes.HACKER_LAPTOP_MENU.get(), HackerLaptopScreen::new);
-            EntityRenderers.register(ModEntities.KILLER_DRONE.get(), WitherSkullRenderer::new);
+            EntityRenderers.register(ModEntities.KILLER_DRONE.get(), NoopRenderer::new);
         }
     }
 }
