@@ -24,10 +24,14 @@ public class ModItems {
     public static final RegistryObject<Item> FORKBOMB_DISK = ITEMS.register("forkbomb_disk", () -> new HackDiskItem(new Item.Properties(), "Форк-бомба (Мусор)"));
     public static final RegistryObject<Item> BLACKOUT_DISK = ITEMS.register("blackout_disk", () -> new HackDiskItem(new Item.Properties(), "Блэкаут-Протокол"));
 
-    // Материалы
+    // Материалы и компоненты
     public static final RegistryObject<Item> CALIBRATED_EYE = ITEMS.register("calibrated_eye", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> PAPER_LETTER = ITEMS.register("paper_letter", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> CONFETTI = ITEMS.register("confetti", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> DIAMOND_BLADE = ITEMS.register("diamond_blade", () -> new Item(new Item.Properties()));
+
+    // Устройства и дроны
+    public static final RegistryObject<Item> KILLER_DRONE = ITEMS.register("killer_drone", () -> new KillerDroneItem(new Item.Properties().stacksTo(1)));
 
     // Модули Сервера защиты
     public static final RegistryObject<Item> ANTIVIRUS_MODULE = ITEMS.register("antivirus_module", () -> new Item(new Item.Properties().stacksTo(1)));
@@ -36,11 +40,9 @@ public class ModItems {
 
     // Экономика: Детектор и Купюры (10$, 50$, 100$)
     public static final RegistryObject<Item> BILL_DETECTOR = ITEMS.register("bill_detector", () -> new BillDetectorItem(new Item.Properties()));
-
     public static final RegistryObject<Item> DIRTY_BILL_10 = ITEMS.register("dirty_bill_10", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> DIRTY_BILL_50 = ITEMS.register("dirty_bill_50", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> DIRTY_BILL_100 = ITEMS.register("dirty_bill_100", () -> new Item(new Item.Properties()));
-
     public static final RegistryObject<Item> CLEAN_BILL_10 = ITEMS.register("clean_bill_10", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> CLEAN_BILL_50 = ITEMS.register("clean_bill_50", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> CLEAN_BILL_100 = ITEMS.register("clean_bill_100", () -> new Item(new Item.Properties()));
@@ -64,6 +66,8 @@ public class ModItems {
                         output.accept(CALIBRATED_EYE.get());
                         output.accept(PAPER_LETTER.get());
                         output.accept(CONFETTI.get());
+                        output.accept(DIAMOND_BLADE.get());
+                        output.accept(KILLER_DRONE.get());
                         output.accept(BILL_DETECTOR.get());
                         output.accept(DIRTY_BILL_10.get());
                         output.accept(DIRTY_BILL_50.get());
