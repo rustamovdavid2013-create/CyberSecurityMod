@@ -45,13 +45,25 @@ public class JammerBlock extends Block {
         builder.add(ACTIVE);
     }
 
-    // Проверка: стоит ли заглушка достаточно высоко и под открытым небом
+    // Проверка: стоит ли глушилка выше Y=62 и нет ли над ней вообще никаких блоков (даже стекла)
     public static boolean canOperate(Level level, BlockPos pos) {
-        return pos.getY() >= MIN_SURFACE_Y && level.canSeeSky(pos.above());
+        if (pos.getY() < MIN_SURFACE_Y) {
+            return false;
+        }
+        for (int y = pos.getY() + 1; y < level.getMaxBuildHeight(); y++) {
+            if (!level.isEmptyBlock(new BlockPos(pos.getX(), y, pos.getZ()))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (hand != InteractionHand.MAIN_HAND) {
+            return InteractionResult.PASS;
+        }
+
         if (!level.isClientSide) {
             boolean isCurrentlyActive = state.getValue(ACTIVE);
 
@@ -61,9 +73,9 @@ public class JammerBlock extends Block {
                     player.sendSystemMessage(Component.literal("[Заглушка] Ошибка: слишком низко (Y=" + pos.getY() + ")! Установите на поверхности (выше Y=" + MIN_SURFACE_Y + ").").withStyle(ChatFormatting.RED));
                     return InteractionResult.SUCCESS;
                 }
-                if (!level.canSeeSky(pos.above())) {
+                if (!canOperate(level, pos)) {
                     level.playSound(null, pos, SoundEvents.DISPENSER_FAIL, SoundSource.BLOCKS, 1.0f, 0.8f);
-                    player.sendSystemMessage(Component.literal("[Заглушка] Ошибка: антенна перекрыта крышей! Нужен открытый выход в небо.").withStyle(ChatFormatting.RED));
+                    player.sendSystemMessage(Component.literal("[Заглушка] Ошибка: антенна перекрыта! Над ней не должно быть никаких блоков.").withStyle(ChatFormatting.RED));
                     return InteractionResult.SUCCESS;
                 }
 
@@ -77,6 +89,16 @@ public class JammerBlock extends Block {
             }
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    // Автоматически выключает глушилку, если над ней поставили блок уже после включения
+    @Override
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+        super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
+        if (!level.isClientSide && state.getValue(ACTIVE) && !canOperate(level, pos)) {
+            level.setBlock(pos, state.setValue(ACTIVE, false), 3);
+            level.playSound(null, pos, SoundEvents.DISPENSER_FAIL, SoundSource.BLOCKS, 1.0f, 0.6f);
+        }
     }
 
     @Override
