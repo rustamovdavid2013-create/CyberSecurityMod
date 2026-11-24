@@ -73,38 +73,45 @@ public class DefenseServerBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (hand != InteractionHand.MAIN_HAND) {
+            return InteractionResult.PASS;
+        }
+
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof DefenseServerBlockEntity server) {
             ItemStack heldItem = player.getItemInHand(hand);
+            boolean isShift = player.isShiftKeyDown();
 
-            if (player.isShiftKeyDown()) {
-                ItemStack extracted = server.extractModule();
+            // Обычный ПКМ -> Верхний слот (0), Shift + ПКМ -> Нижний слот (1)
+            int targetSlot = isShift ? 1 : 0;
+            String slotLabel = isShift ? "Нижний слот" : "Верхний слот";
+
+            // 1. Если рука пустая — пытаемся достать модуль из выбранного слота
+            if (heldItem.isEmpty()) {
+                ItemStack extracted = server.extractModuleFromSlot(targetSlot);
                 if (!extracted.isEmpty()) {
-                    player.getInventory().placeItemBackInInventory(extracted);
+                    player.setItemInHand(hand, extracted);
                     level.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK.get(), SoundSource.BLOCKS, 1.0f, 0.8f);
-                    player.sendSystemMessage(Component.literal("[Сервер защиты] Модуль извлечен: " + extracted.getHoverName().getString()).withStyle(ChatFormatting.YELLOW));
-                    return InteractionResult.SUCCESS;
-                }
-            }
-
-            if (!heldItem.isEmpty()) {
-                if (!isServerModule(heldItem)) {
-                    player.sendSystemMessage(Component.literal("[Сервер защиты] Ошибка: сюда можно вставлять только модули защиты (Антивирус, Файрвол, Honeypot)!").withStyle(ChatFormatting.RED));
-                    return InteractionResult.SUCCESS;
-                }
-
-                if (server.insertModule(heldItem)) {
-                    level.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK.get(), SoundSource.BLOCKS, 1.0f, 1.2f);
-                    player.sendSystemMessage(Component.literal("[Сервер защиты] Модуль установлен!").withStyle(ChatFormatting.GREEN));
-                    return InteractionResult.SUCCESS;
+                    player.sendSystemMessage(Component.literal("[Сервер защиты] Извлечён модуль (" + slotLabel + "): " + extracted.getHoverName().getString()).withStyle(ChatFormatting.YELLOW));
                 } else {
-                    player.sendSystemMessage(Component.literal("[Сервер защиты] Оба слота уже заняты! (Shift+ПКМ чтобы вытащить)").withStyle(ChatFormatting.RED));
-                    return InteractionResult.SUCCESS;
+                    String s1 = server.getSlot(0).isEmpty() ? "Пусто" : server.getSlot(0).getHoverName().getString();
+                    String s2 = server.getSlot(1).isEmpty() ? "Пусто" : server.getSlot(1).getHoverName().getString();
+                    player.sendSystemMessage(Component.literal("[Сервер защиты] " + slotLabel + " пуст. | Верх: " + s1 + " | Низ: " + s2).withStyle(ChatFormatting.AQUA));
                 }
+                return InteractionResult.SUCCESS;
             }
 
-            String slot1 = server.getSlot(0).isEmpty() ? "Пусто" : server.getSlot(0).getHoverName().getString();
-            String slot2 = server.getSlot(1).isEmpty() ? "Пусто" : server.getSlot(1).getHoverName().getString();
-            player.sendSystemMessage(Component.literal("[Сервер защиты] Слот 1: " + slot1 + " | Слот 2: " + slot2).withStyle(ChatFormatting.AQUA));
+            // 2. Если в руке предмет — проверяем, модуль ли это, и вставляем в выбранный слот
+            if (!isServerModule(heldItem)) {
+                player.sendSystemMessage(Component.literal("[Сервер защиты] Ошибка: можно вставить только модули защиты (Антивирус, Файрвол, Honeypot)!").withStyle(ChatFormatting.RED));
+                return InteractionResult.SUCCESS;
+            }
+
+            if (server.insertModuleToSlot(targetSlot, heldItem)) {
+                level.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK.get(), SoundSource.BLOCKS, 1.0f, 1.2f);
+                player.sendSystemMessage(Component.literal("[Сервер защиты] Модуль установлен в: " + slotLabel).withStyle(ChatFormatting.GREEN));
+            } else {
+                player.sendSystemMessage(Component.literal("[Сервер защиты] " + slotLabel + " уже занят! Сначала освободите его пустой рукой.").withStyle(ChatFormatting.RED));
+            }
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
