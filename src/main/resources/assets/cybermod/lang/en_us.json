@@ -1,24 +1,33 @@
 {
   "creativetab.cybermod.cyber_tab": "CyberSecurity Mod",
+
   "block.cybermod.hacker_laptop": "Hacker Laptop",
   "block.cybermod.defense_server": "Defense Server",
-  "block.cybermod.jammer_block": "Network Jammer",
-  "item.cybermod.sniffer_disk": "Disk: Sniffer",
-  "item.cybermod.trojan_disk": "Disk: Trojan",
-  "item.cybermod.ddos_disk": "Disk: DDoS Attack",
-  "item.cybermod.forkbomb_disk": "Disk: Fork-Bomb",
+  "block.cybermod.jammer_block": "Signal Jammer",
+
+  "item.cybermod.sniffer_disk": "Disk: Sniffer (Espionage)",
+  "item.cybermod.trojan_disk": "Disk: Trojan (Theft)",
+  "item.cybermod.ddos_disk": "Disk: DDoS (Block)",
+  "item.cybermod.forkbomb_disk": "Disk: Fork-Bomb (Junk)",
   "item.cybermod.blackout_disk": "Disk: Blackout Protocol",
+
+  "item.cybermod.antivirus_module": "Module: Antivirus",
+  "item.cybermod.firewall_module": "Module: Firewall",
+  "item.cybermod.honeypot_module": "Module: Honeypot",
+
   "item.cybermod.calibrated_eye": "Calibrated Eye",
   "item.cybermod.paper_letter": "Paper Letter",
   "item.cybermod.confetti": "Confetti",
-  "item.cybermod.antivirus_module": "Antivirus Module",
-  "item.cybermod.firewall_module": "Firewall Module",
-  "item.cybermod.honeypot_module": "Honeypot Module",
+  "item.cybermod.diamond_blade": "Diamond Blade",
+  "item.cybermod.killer_drone": "Killer Drone",
+
   "item.cybermod.bill_detector": "Bill Detector",
-  "item.cybermod.dirty_bill_10": "Dirty Bill $10 (Faded)",
-  "item.cybermod.dirty_bill_50": "Dirty Bill $50 (Faded)",
-  "item.cybermod.dirty_bill_100": "Dirty Bill $100 (Faded)",
-  "item.cybermod.clean_bill_10": "Clean Bill $10 (Green)",
-  "item.cybermod.clean_bill_50": "Clean Bill $50 (Blue)",
-  "item.cybermod.clean_bill_100": "Clean Bill $100 (Magenta)"
+  "item.cybermod.dirty_bill_10": "Dirty Bill ($10)",
+  "item.cybermod.dirty_bill_50": "Dirty Bill ($50)",
+  "item.cybermod.dirty_bill_100": "Dirty Bill ($100)",
+  "item.cybermod.clean_bill_10": "Clean Bill ($10)",
+  "item.cybermod.clean_bill_50": "Clean Bill ($50)",
+  "item.cybermod.clean_bill_100": "Clean Bill ($100)",
+
+  "entity.cybermod.killer_drone": "Killer Drone"
 }
