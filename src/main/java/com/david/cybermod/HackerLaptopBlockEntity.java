@@ -234,6 +234,8 @@ public class HackerLaptopBlockEntity extends BlockEntity {
     public void setDisk(ItemStack stack) { itemHandler.setStackInSlot(0, stack); }
     public int getEnergy() { return energyStorage.getEnergyStored(); }
     public int getMaxEnergy() { return energyStorage.getMaxEnergyStored(); }
+    public void extractEnergyDirect(int amount) { energyStorage.extractEnergy(amount, false); setChanged(); }
+
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
