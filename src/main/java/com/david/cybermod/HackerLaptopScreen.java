@@ -4,6 +4,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
@@ -26,7 +27,6 @@ public class HackerLaptopScreen extends AbstractContainerScreen<HackerLaptopMenu
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
 
-        // Поля ввода координат X, Y, Z
         this.xInput = new EditBox(this.font, x + 16, y + 46, 44, 14, Component.literal("X"));
         this.yInput = new EditBox(this.font, x + 66, y + 46, 44, 14, Component.literal("Y"));
         this.zInput = new EditBox(this.font, x + 116, y + 46, 44, 14, Component.literal("Z"));
@@ -35,19 +35,21 @@ public class HackerLaptopScreen extends AbstractContainerScreen<HackerLaptopMenu
         this.yInput.setMaxLength(5);
         this.zInput.setMaxLength(7);
 
-        // Если на диске уже записаны координаты — подставляем их в поля
+        // Если на диске уже записаны координаты через Shift+ПКМ — подставляем их в поля
         ItemStack disk = this.menu.blockEntity.getDisk();
-        if (!disk.isEmpty() && disk.hasTag() && disk.getTag().contains("targetX")) {
-            this.xInput.setValue(String.valueOf(disk.getTag().getInt("targetX")));
-            this.yInput.setValue(String.valueOf(disk.getTag().getInt("targetY")));
-            this.zInput.setValue(String.valueOf(disk.getTag().getInt("targetZ")));
+        if (!disk.isEmpty() && disk.getItem() instanceof HackDiskItem) {
+            BlockPos savedTarget = HackDiskItem.getTargetPos(disk);
+            if (savedTarget != null) {
+                this.xInput.setValue(String.valueOf(savedTarget.getX()));
+                this.yInput.setValue(String.valueOf(savedTarget.getY()));
+                this.zInput.setValue(String.valueOf(savedTarget.getZ()));
+            }
         }
 
         this.addRenderableWidget(this.xInput);
         this.addRenderableWidget(this.yInput);
         this.addRenderableWidget(this.zInput);
 
-        // Кнопка запуска атаки
         this.addRenderableWidget(Button.builder(Component.literal("ВЗЛОМАТЬ"), button -> {
             int tx = parseCoord(this.xInput.getValue(), this.menu.blockEntity.getBlockPos().getX());
             int ty = parseCoord(this.yInput.getValue(), this.menu.blockEntity.getBlockPos().getY());
@@ -73,25 +75,20 @@ public class HackerLaptopScreen extends AbstractContainerScreen<HackerLaptopMenu
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
 
-        // Тёмный корпус окна и зелёная рамка терминала
         graphics.fill(x, y, x + this.imageWidth, y + this.imageHeight, 0xFF1A1D24);
         graphics.renderOutline(x, y, this.imageWidth, this.imageHeight, 0xFF00FF66);
 
-        // Рамка слота под диск (80, 22)
         graphics.fill(x + 79, y + 21, x + 97, y + 39, 0xFF0D0F12);
         graphics.renderOutline(x + 79, y + 21, 18, 18, 0xFF00FF66);
 
-        // Подписи координат
         graphics.drawString(this.font, "X:", x + 8, y + 49, 0x00FF66, false);
         graphics.drawString(this.font, "Y:", x + 58, y + 49, 0x00FF66, false);
         graphics.drawString(this.font, "Z:", x + 108, y + 49, 0x00FF66, false);
 
-        // Отображение энергии RF
         int energy = this.menu.blockEntity.getEnergy();
         int maxEnergy = this.menu.blockEntity.getMaxEnergy();
         graphics.drawString(this.font, energy + " / " + maxEnergy + " RF", x + 8, y + 26, 0x55FFFF, false);
 
-        // Слоты инвентаря игрока
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 int sx = x + 7 + col * 18;
@@ -117,9 +114,8 @@ public class HackerLaptopScreen extends AbstractContainerScreen<HackerLaptopMenu
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        // Чтобы нажатие 'E' при вводе текста не закрывало окно
         if (this.xInput.isFocused() || this.yInput.isFocused() || this.zInput.isFocused()) {
-            if (keyCode == 256) { // Esc
+            if (keyCode == 256) {
                 this.minecraft.player.closeContainer();
                 return true;
             }
