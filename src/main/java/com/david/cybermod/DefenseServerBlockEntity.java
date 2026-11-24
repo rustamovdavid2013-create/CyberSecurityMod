@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class DefenseServerBlockEntity extends BlockEntity {
 
-    // 2 слота под модули (Антивирус / Файрвол / Honeypot)
+    // 2 слота под модули: 0 = Верхний слот, 1 = Нижний слот
     private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -34,23 +34,21 @@ public class DefenseServerBlockEntity extends BlockEntity {
         return itemHandler.getStackInSlot(index);
     }
 
-    public boolean insertModule(ItemStack heldItem) {
-        for (int i = 0; i < 2; i++) {
-            if (itemHandler.getStackInSlot(i).isEmpty()) {
-                itemHandler.setStackInSlot(i, heldItem.split(1));
-                return true;
-            }
+    public boolean insertModuleToSlot(int slot, ItemStack heldItem) {
+        if (slot < 0 || slot >= 2) return false;
+        if (itemHandler.getStackInSlot(slot).isEmpty()) {
+            itemHandler.setStackInSlot(slot, heldItem.split(1));
+            return true;
         }
         return false;
     }
 
-    public ItemStack extractModule() {
-        for (int i = 1; i >= 0; i--) {
-            ItemStack stack = itemHandler.getStackInSlot(i);
-            if (!stack.isEmpty()) {
-                itemHandler.setStackInSlot(i, ItemStack.EMPTY);
-                return stack;
-            }
+    public ItemStack extractModuleFromSlot(int slot) {
+        if (slot < 0 || slot >= 2) return ItemStack.EMPTY;
+        ItemStack stack = itemHandler.getStackInSlot(slot);
+        if (!stack.isEmpty()) {
+            itemHandler.setStackInSlot(slot, ItemStack.EMPTY);
+            return stack;
         }
         return ItemStack.EMPTY;
     }
