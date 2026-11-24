@@ -53,6 +53,18 @@ public class DefenseServerBlockEntity extends BlockEntity {
         return ItemStack.EMPTY;
     }
 
+    // Метод для DDoS-атаки из ноутбука (выбивает первый найденный модуль)
+    public ItemStack extractModule() {
+        for (int i = 1; i >= 0; i--) {
+            ItemStack stack = itemHandler.getStackInSlot(i);
+            if (!stack.isEmpty()) {
+                itemHandler.setStackInSlot(i, ItemStack.EMPTY);
+                return stack;
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.ITEM_HANDLER) {
