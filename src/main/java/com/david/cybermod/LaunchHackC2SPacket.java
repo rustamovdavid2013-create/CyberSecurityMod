@@ -1,7 +1,6 @@
 package com.david.cybermod;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -46,11 +45,8 @@ public class LaunchHackC2SPacket {
 
             if (level.getBlockEntity(laptopPos) instanceof HackerLaptopBlockEntity laptop) {
                 ItemStack disk = laptop.getDisk();
-                if (!disk.isEmpty()) {
-                    CompoundTag tag = disk.getOrCreateTag();
-                    tag.putInt("targetX", targetX);
-                    tag.putInt("targetY", targetY);
-                    tag.putInt("targetZ", targetZ);
+                if (!disk.isEmpty() && disk.getItem() instanceof HackDiskItem) {
+                    HackDiskItem.setTargetPos(disk, new BlockPos(targetX, targetY, targetZ));
                 }
                 laptop.executeHack(player);
             }
