@@ -11,6 +11,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -70,7 +71,6 @@ public class HackerLaptopBlockEntity extends BlockEntity {
 
         @Override
         public void set(int index, int value) {
-            // Значения синхронизируются с сервера на клиент автоматически
         }
 
         @Override
@@ -110,10 +110,8 @@ public class HackerLaptopBlockEntity extends BlockEntity {
     // Вызывается при провале мини-игры
     public void failHack(Player hacker) {
         if (level == null || level.isClientSide) return;
-
         if (blackoutTicks > 0 || cooldownTicks > 0) return;
 
-        // Списываем часть энергии за неудачную попытку и вешаем кулдаун 20 минут
         energyStorage.extractEnergy(500, false);
         cooldownTicks = 20 * 60 * 20; // 20 минут
         setChanged();
@@ -173,7 +171,7 @@ public class HackerLaptopBlockEntity extends BlockEntity {
                 level.playSound(null, worldPosition, SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS, 1.0f, 0.6f);
                 hacker.sendSystemMessage(Component.literal("[CyberOS] ВЗЛОМ ПРОВАЛЕН: Сигнал перехвачен Заглушкой сети и ушел в пустоту! Кулдаун: 20 мин.")
                         .withStyle(ChatFormatting.RED));
-                cooldownTicks = 20 * 60 * 20; // 20 минут
+                cooldownTicks = 20 * 60 * 20;
                 return;
             }
         }
@@ -207,7 +205,7 @@ public class HackerLaptopBlockEntity extends BlockEntity {
                         + worldPosition.getX() + ", Y=" + worldPosition.getY() + ", Z=" + worldPosition.getZ())
                         .withStyle(ChatFormatting.RED));
             }
-            cooldownTicks = 20 * 60 * 20; // 20 минут
+            cooldownTicks = 20 * 60 * 20;
             return;
         }
 
@@ -216,7 +214,7 @@ public class HackerLaptopBlockEntity extends BlockEntity {
             level.playSound(null, worldPosition, SoundEvents.DISPENSER_FAIL, SoundSource.BLOCKS, 1.0f, 0.7f);
             hacker.sendSystemMessage(Component.literal("[CyberOS] Атака заблокирована Антивирусом цели! Доступ закрыт на 10 минут.")
                     .withStyle(ChatFormatting.RED));
-            cooldownTicks = 10 * 60 * 20; // 10 минут
+            cooldownTicks = 10 * 60 * 20;
             return;
         }
 
@@ -242,14 +240,69 @@ public class HackerLaptopBlockEntity extends BlockEntity {
                 cooldownTicks = 10 * 60 * 20;
                 return;
             }
-            int roll = level.random.nextInt(10);
-            ItemStack stolenMoney;
-            if (roll < 6) stolenMoney = new ItemStack(ModItems.DIRTY_BILL_10.get(), 1 + level.random.nextInt(3));
-            else if (roll < 9) stolenMoney = new ItemStack(ModItems.DIRTY_BILL_50.get(), 1 + level.random.nextInt(2));
-            else stolenMoney = new ItemStack(ModItems.DIRTY_BILL_100.get(), 1);
 
-            hacker.getInventory().placeItemBackInInventory(stolenMoney);
-            hacker.sendSystemMessage(Component.literal("[Троян] Взлом успешен! Украдено: " + stolenMoney.getCount() + "x " + stolenMoney.getHoverName().getString())
+            int stolen10 = 0;
+            int stolen50 = 0;
+            int stolen100 = 0;
+
+            // Сканируем все хранилища (сундуки и модовые инвентари) в радиусе 5 блоков от цели
+            for (BlockPos scanPos : BlockPos.betweenClosed(target.offset(-5, -5, -5), target.offset(5, 5, 5))) {
+                if (scanPos.equals(worldPosition)) continue;
+                BlockEntity be = level.getBlockEntity(scanPos);
+                if (be == null) continue;
+
+                LazyOptional<IItemHandler> cap = be.getCapability(ForgeCapabilities.ITEM_HANDLER, null);
+                if (cap.isPresent()) {
+                    IItemHandler handler = cap.orElseThrow(IllegalStateException::new);
+                    for (int slot = 0; slot < handler.getSlots(); slot++) {
+                        ItemStack stack = handler.getStackInSlot(slot);
+                        if (stack.isEmpty()) continue;
+
+                        if (stack.is(ModItems.CLEAN_BILL_10.get())) {
+                            ItemStack extracted = handler.extractItem(slot, stack.getCount(), false);
+                            stolen10 += extracted.getCount();
+                        } else if (stack.is(ModItems.CLEAN_BILL_50.get())) {
+                            ItemStack extracted = handler.extractItem(slot, stack.getCount(), false);
+                            stolen50 += extracted.getCount();
+                        } else if (stack.is(ModItems.CLEAN_BILL_100.get())) {
+                            ItemStack extracted = handler.extractItem(slot, stack.getCount(), false);
+                            stolen100 += extracted.getCount();
+                        }
+                    }
+                } else if (be instanceof Container container) {
+                    for (int slot = 0; slot < container.getContainerSize(); slot++) {
+                        ItemStack stack = container.getItem(slot);
+                        if (stack.isEmpty()) continue;
+
+                        if (stack.is(ModItems.CLEAN_BILL_10.get())) {
+                            stolen10 += stack.getCount();
+                            container.setItem(slot, ItemStack.EMPTY);
+                        } else if (stack.is(ModItems.CLEAN_BILL_50.get())) {
+                            stolen50 += stack.getCount();
+                            container.setItem(slot, ItemStack.EMPTY);
+                        } else if (stack.is(ModItems.CLEAN_BILL_100.get())) {
+                            stolen100 += stack.getCount();
+                            container.setItem(slot, ItemStack.EMPTY);
+                        }
+                    }
+                    container.setChanged();
+                }
+            }
+
+            int totalStolen = stolen10 + stolen50 + stolen100;
+            if (totalStolen == 0) {
+                hacker.sendSystemMessage(Component.literal("[Троян] Взлом выполнен, но в хранилищах цели (радиус 5 блоков) не найдено чистых купюр.")
+                        .withStyle(ChatFormatting.YELLOW));
+                return;
+            }
+
+            // Половина остаётся чистой, половина портится (становится грязной)
+            distributeStolenBills(hacker, stolen10, ModItems.CLEAN_BILL_10.get(), ModItems.DIRTY_BILL_10.get());
+            distributeStolenBills(hacker, stolen50, ModItems.CLEAN_BILL_50.get(), ModItems.DIRTY_BILL_50.get());
+            distributeStolenBills(hacker, stolen100, ModItems.CLEAN_BILL_100.get(), ModItems.DIRTY_BILL_100.get());
+
+            int totalValue = stolen10 * 10 + stolen50 * 50 + stolen100 * 100;
+            hacker.sendSystemMessage(Component.literal("[Троян] Успешная кража! Изъято купюр: " + totalStolen + " шт. (на сумму $" + totalValue + "). Половина повреждена при передаче!")
                     .withStyle(ChatFormatting.GREEN));
 
         } else if (disk.is(ModItems.DDOS_DISK.get())) {
@@ -290,6 +343,19 @@ public class HackerLaptopBlockEntity extends BlockEntity {
             hacker.sendSystemMessage(Component.literal("[БЛЭКАУТ-ПРОТОКОЛ] Все ПК и системы в радиусе 15 блоков вырублены на 2.5 минуты! Кулдаун: 1 игровой день.")
                     .withStyle(ChatFormatting.DARK_PURPLE));
             cooldownTicks = 24000;
+        }
+    }
+
+    private void distributeStolenBills(Player hacker, int totalCount, Item cleanBill, Item dirtyBill) {
+        if (totalCount <= 0) return;
+        int cleanCount = totalCount / 2;
+        int dirtyCount = totalCount - cleanCount;
+
+        if (cleanCount > 0) {
+            hacker.getInventory().placeItemBackInInventory(new ItemStack(cleanBill, cleanCount));
+        }
+        if (dirtyCount > 0) {
+            hacker.getInventory().placeItemBackInInventory(new ItemStack(dirtyBill, dirtyCount));
         }
     }
 
@@ -340,7 +406,6 @@ public class HackerLaptopBlockEntity extends BlockEntity {
         super.load(tag);
         itemHandler.deserializeNBT(tag.getCompound("inventory"));
         if (tag.contains("energy")) {
-            // Загружаем энергию циклами, чтобы не упереться в лимит maxReceive = 1000 за один вызов
             int savedEnergy = tag.getInt("energy");
             while (energyStorage.getEnergyStored() < savedEnergy) {
                 int added = energyStorage.receiveEnergy(savedEnergy - energyStorage.getEnergyStored(), false);
