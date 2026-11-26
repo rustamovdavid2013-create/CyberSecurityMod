@@ -14,12 +14,14 @@ public class LaunchHackC2SPacket {
     private final int targetX;
     private final int targetY;
     private final int targetZ;
+    private final boolean success;
 
-    public LaunchHackC2SPacket(BlockPos laptopPos, int targetX, int targetY, int targetZ) {
+    public LaunchHackC2SPacket(BlockPos laptopPos, int targetX, int targetY, int targetZ, boolean success) {
         this.laptopPos = laptopPos;
         this.targetX = targetX;
         this.targetY = targetY;
         this.targetZ = targetZ;
+        this.success = success;
     }
 
     public LaunchHackC2SPacket(FriendlyByteBuf buf) {
@@ -27,6 +29,7 @@ public class LaunchHackC2SPacket {
         this.targetX = buf.readInt();
         this.targetY = buf.readInt();
         this.targetZ = buf.readInt();
+        this.success = buf.readBoolean();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
@@ -34,6 +37,7 @@ public class LaunchHackC2SPacket {
         buf.writeInt(targetX);
         buf.writeInt(targetY);
         buf.writeInt(targetZ);
+        buf.writeBoolean(success);
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
@@ -44,6 +48,11 @@ public class LaunchHackC2SPacket {
             ServerLevel level = player.serverLevel();
 
             if (level.getBlockEntity(laptopPos) instanceof HackerLaptopBlockEntity laptop) {
+                if (!success) {
+                    laptop.failHack(player);
+                    return;
+                }
+
                 ItemStack disk = laptop.getDisk();
                 if (!disk.isEmpty() && disk.getItem() instanceof HackDiskItem) {
                     HackDiskItem.setTargetPos(disk, new BlockPos(targetX, targetY, targetZ));
