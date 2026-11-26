@@ -3,23 +3,25 @@
 
   "block.cybermod.hacker_laptop": "Hacker Laptop",
   "block.cybermod.defense_server": "Defense Server",
-  "block.cybermod.jammer_block": "Signal Jammer",
+  "block.cybermod.jammer_block": "Network Jammer",
 
   "item.cybermod.sniffer_disk": "Disk: Sniffer (Espionage)",
   "item.cybermod.trojan_disk": "Disk: Trojan (Theft)",
-  "item.cybermod.ddos_disk": "Disk: DDoS (Block)",
-  "item.cybermod.forkbomb_disk": "Disk: Fork-Bomb (Junk)",
+  "item.cybermod.ddos_disk": "Disk: DDoS (Disruption)",
+  "item.cybermod.forkbomb_disk": "Disk: Fork-Bomb (Spam)",
   "item.cybermod.blackout_disk": "Disk: Blackout Protocol",
-
-  "item.cybermod.antivirus_module": "Module: Antivirus",
-  "item.cybermod.firewall_module": "Module: Firewall",
-  "item.cybermod.honeypot_module": "Module: Honeypot",
 
   "item.cybermod.calibrated_eye": "Calibrated Eye",
   "item.cybermod.paper_letter": "Paper Letter",
   "item.cybermod.confetti": "Confetti",
   "item.cybermod.diamond_blade": "Diamond Blade",
+
   "item.cybermod.killer_drone": "Killer Drone",
+  "entity.cybermod.killer_drone": "Killer Drone",
+
+  "item.cybermod.antivirus_module": "Module: Antivirus",
+  "item.cybermod.firewall_module": "Module: Firewall",
+  "item.cybermod.honeypot_module": "Module: Honeypot",
 
   "item.cybermod.bill_detector": "Bill Detector",
   "item.cybermod.dirty_bill_10": "Dirty Bill ($10)",
@@ -27,7 +29,5 @@
   "item.cybermod.dirty_bill_100": "Dirty Bill ($100)",
   "item.cybermod.clean_bill_10": "Clean Bill ($10)",
   "item.cybermod.clean_bill_50": "Clean Bill ($50)",
-  "item.cybermod.clean_bill_100": "Clean Bill ($100)",
-
-  "entity.cybermod.killer_drone": "Killer Drone"
+  "item.cybermod.clean_bill_100": "Clean Bill ($100)"
 }
